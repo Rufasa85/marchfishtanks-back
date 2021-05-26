@@ -25,8 +25,11 @@ router.post("/login", (req, res) => {
         }
     }).then(user => {
         if (!user) {
+            console.log('user not found')
             return res.status(403).json({ message: "auth failed" })
         } else if (!bcrypt.compareSync(req.body.password, user.password)) {
+            console.log(req.body.password);
+            console.log("passwords dont match")
             return res.status(403).json({ message: "auth failed" })
         } else {
             const token = jwt.sign({
@@ -53,10 +56,10 @@ router.get("/profile",tokenAuth,(req,res)=>{
             id:req.user.id
         }
     }).then(userData=>{
-        res.json(userData)
+        return res.json(userData)
     }).catch(err=>{
         console.log(err);
-        req.status(500).json({message:"error",err})
+        return res.status(500).json({message:"error",err})
     })
 })
 

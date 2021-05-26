@@ -4,6 +4,7 @@ var express = require('express');
 var app = express();
 var PORT = process.env.PORT || 3001;
 var allRoutes = require('./controllers');
+const cors = require("cors")
 
 // Requiring our models for syncing
 var sequelize = require('./config/connection.js');
@@ -12,8 +13,7 @@ const {User} = require("./models");
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-
+app.use(cors());
 
 app.use('/',allRoutes);
 
