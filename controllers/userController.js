@@ -11,7 +11,16 @@ router.post("/signup", (req, res) => {
         password: req.body.password,
         email: req.body.email
     }).then(newUser => {
-        res.json(newUser)
+        const token = jwt.sign({
+            name:newUser.name,
+            email:newUser.email,
+            id:newUser.id
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn:"2h"
+        })
+        res.json({token, user:newUser })
     }).catch(err => {
         console.log(err);
         res.status(500).json({ message: "an error occured", err })
