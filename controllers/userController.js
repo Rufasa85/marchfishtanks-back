@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { User } = require('../models');
+const { User,Tank,Fish } = require('../models');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
 const tokenAuth = require("../middleware/tokenAuth")
@@ -63,7 +63,13 @@ router.get("/profile",tokenAuth,(req,res)=>{
     User.findOne({
         where:{
             id:req.user.id
-        }
+        },
+        include:[{
+            model:Tank,
+            include:[Fish]
+        },
+        Fish
+    ]
     }).then(userData=>{
         return res.json(userData)
     }).catch(err=>{
