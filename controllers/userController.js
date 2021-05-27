@@ -77,5 +77,18 @@ router.get("/profile",tokenAuth,(req,res)=>{
         return res.status(500).json({message:"error",err})
     })
 })
+router.get("/mytanks",tokenAuth,(req,res)=>{
+    User.findOne({
+        where:{
+            id:req.user.id
+        },
+        include:[Tank]
+    }).then(data=>{
+        res.json(data)
+    }).catch(err=>{
+        console.log(err);
+        res.status(500).json(err);
+    })
+})
 
 module.exports = router;
